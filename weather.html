@@ -1,0 +1,41 @@
+<html>
+  <head> </head>
+  <body>
+    <img id="weather-img" />
+    <button onclick="play()">play</button>
+  </body>
+
+  <script>
+    let IMAGE_COUNT = 20;
+    let IMG_SOURCE_INTERVAL = 6 * 60 * 1000; //ms
+    let PLAY_INTERVAL = 500; //ms
+
+    play();
+
+    function play() {
+      let date = new Date();
+      date.setMinutes(
+        ((date.getMinutes() / IMG_SOURCE_INTERVAL) | 0) * IMG_SOURCE_INTERVAL
+      );
+
+      for (let i = IMAGE_COUNT; i >= 1; i--) {
+        setTimeout(function timer() {
+          let imageDate = new Date(date - i * IMG_SOURCE_INTERVAL);
+          let dateStr = getFormattedDateTime(imageDate);
+          let imgUrl = `http://weather.zhuhai.gov.cn/files/rdr-img/CAP_R030239${dateStr}.gif`;
+          document.getElementById("weather-img").setAttribute("src", imgUrl);
+        }, (IMAGE_COUNT - i) * 300);
+      }
+    }
+    function getFormattedDateTime(date) {
+      var year = date.getFullYear(); // 获取年份
+      var month = (date.getMonth() + 1).toString().padStart(2, "0");
+      var day = date.getDate().toString().padStart(2, "0");
+      var hours = date.getHours().toString().padStart(2, "0");
+      var minutes = date.getMinutes().toString().padStart(2, "0");
+
+      var formattedDateTime = `${year}${month}${day}${hours}${minutes}`;
+      return formattedDateTime;
+    }
+  </script>
+</html>
